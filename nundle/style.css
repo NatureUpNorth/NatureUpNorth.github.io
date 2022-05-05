@@ -6,7 +6,7 @@
 
 body{
 
-background-color: #171817;
+background-color: #15586f;
 }
 
 .game-container{
@@ -18,7 +18,8 @@ background-color: #171817;
 }
 .title-container{
     text-align: center;
-    width: 510px;
+    margin-left: 30px;
+    width: 500px;
     border-bottom: solid 1px #3a3a3c;
 }
 
@@ -27,6 +28,11 @@ background-color: #171817;
     margin-bottom: 30px;
 }
 
+.title-container img{
+    margin-left: 1px;
+    width: 50px;
+    height: 50px;
+}
 
 
 
@@ -100,7 +106,7 @@ background-color: #171817;
 
 
 .grey-overlay{
-    background-color: #3a3a3c !important;
+    background-color: #533a1f !important;
     border: none !important;
 }
 .yellow-overlay{
@@ -108,8 +114,9 @@ background-color: #171817;
     border: none !important;
 }
 .green-overlay {
-    background-color: #538d4e !important;
+    background-color: #39531e !important; // #39531e
     border:none !important
 }
+
 
 
