@@ -16,6 +16,9 @@ const getNundle = () => {
 			// error checking
             nundleLength = json['data']['puzzleLength'];
 			nundleID = json['data']['puzzleID'];
+			// update the title up top
+			titleElement = document.getElementsByClassName('title-container');
+			titleElement[0].innerHTML = "<h1>Nundle #" + nundleID + "</h1>";
             construct_game();
         })
         .catch(err => console.log(err))
