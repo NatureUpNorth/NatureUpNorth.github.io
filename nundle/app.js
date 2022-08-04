@@ -3,18 +3,24 @@ const keyboard = document.querySelector('.key-container')
 const messageDisplay = document.querySelector('.message-container')
 
 
-let wordle
+let nundleLength
+let nundleID
+let nundleFeedback
+let maxGuesses = 5
 
-const getWordle = () => {
-    fetch('http://localhost:8000/word')
+const getNundle = () => {
+    fetch('https://myslu.stlawu.edu/~clee/nundle/nundle.php')
         .then(response => response.json())
         .then(json => {
-            wordle = json.toUpperCase()
-            construct_game(wordle.length);
+			// TODO:
+			// error checking
+            nundleLength = json['data']['puzzleLength'];
+			nundleID = json['data']['puzzleID'];
+            construct_game();
         })
         .catch(err => console.log(err))
 }
-getWordle()
+getNundle()
 
 const keys = [
     'Q',
@@ -46,26 +52,22 @@ const keys = [
     'M',
     '«',
 ]
-let guessRows = [
-    ['', '', '', '', ''],
-    ['', '', '', '', ''],
-    ['', '', '', '', ''],
-    ['', '', '', '', ''],
-    ['', '', '', '', '']
-    //['', '', '', '', '', '']
-]
+
+let guessRows = []
+
+for (let count = 0; count < maxGuesses; count++) {
+	guessRows.push([]);
+}
 let currentRow = 0
 let currentTile = 0
 let isGameOver = false
-let size = 5
 
-const construct_game = (size) => {
-    if(size === 6){
-        guessRows.forEach((arr)=>{
-            arr.append("");
-        });
-        size = 6
-    }
+const construct_game = () => {
+    guessRows.forEach((arr)=>{
+		for (let count = 0; count < nundleLength; count++) {
+			arr.push("");
+		}
+    });
     guessRows.forEach((guessRow, guessRowIndex) => {
         const rowElement = document.createElement('div')
         rowElement.setAttribute('id', 'guessRow-' + guessRowIndex)
@@ -138,7 +140,7 @@ const handleClick = (letter) => {
 }
 
 const addLetter = (letter) => {
-    if (currentTile < size && currentRow < 6) {
+    if (currentTile < nundleLength && currentRow < 6) {
         const tile = document.getElementById('guessRow-' + currentRow + '-tile-' + currentTile)
         tile.textContent = letter
         guessRows[currentRow][currentTile] = letter
@@ -160,25 +162,29 @@ const deleteLetter = () => {
 const checkRow = () => {
     const guess = guessRows[currentRow].join('')
     if (currentTile > 4) {
-        fetch(`http://localhost:8000/check/?word=${guess}`)
+        fetch(`https://myslu.stlawu.edu/~clee/nundle/nundle.php?puzzle=${nundleID}&guess=${guess}`)
             .then(response => response.json())
             .then(json => {
+				console.log(json);
+				// TODO:
+				// the nundle script needs to check if it's a valid word or not
+				// for now, assume it is a valid word
+				nundleFeedback = json['data']['feedback'];
                 if (json == 'Entry word not found') {
                     showMessage('word not in list')
                     return
                 } else {
                     flipTile()
-                    if (wordle == guess) {
+                    if (nundleFeedback.reduce((a, b) => a + b, 0) == 2 * nundleLength) {
                         showMessage('Magnificent!')
                         isGameOver = true
                         return
                     } else {
-                        if (currentRow >= 5) {
+                        if (currentRow >= maxGuesses - 1) {
                             isGameOver = true
-                            showMessage('Game Over: ' + wordle)
+                            showMessage('Game Over!')
                             return
-                        }
-                        if (currentRow < 5) {
+                        } else {
                             currentRow++
                             currentTile = 0
                         }
@@ -202,7 +208,6 @@ const addColorToKey = (keyLetter, color) => {
 
 const flipTile = () => {
     const rowTiles = document.querySelector('#guessRow-' + currentRow).childNodes
-    let checkWordle = wordle
     const guess = []
 
     rowTiles.forEach(tile => {
@@ -210,16 +215,14 @@ const flipTile = () => {
     })
 
     guess.forEach((guess, index) => {
-        if (guess.letter == wordle[index]) {
+        if (nundleFeedback[index] == 2) {
             guess.color = 'green-overlay'
-            checkWordle = checkWordle.replace(guess.letter, '')
         }
     })
 
-    guess.forEach(guess => {
-        if (checkWordle.includes(guess.letter)) {
+    guess.forEach((guess, index) => {
+        if (nundleFeedback[index] == 1) {
             guess.color = 'yellow-overlay'
-            checkWordle = checkWordle.replace(guess.letter, '')
         }
     })
 
