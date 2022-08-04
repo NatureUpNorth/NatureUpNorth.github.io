@@ -165,15 +165,8 @@ const checkRow = () => {
         fetch(`https://myslu.stlawu.edu/~clee/nundle/nundle.php?puzzle=${nundleID}&guess=${guess}`)
             .then(response => response.json())
             .then(json => {
-				console.log(json);
-				// TODO:
-				// the nundle script needs to check if it's a valid word or not
-				// for now, assume it is a valid word
-				nundleFeedback = json['data']['feedback'];
-                if (json == 'Entry word not found') {
-                    showMessage('word not in list')
-                    return
-                } else {
+				if (json['code'] == 200) {
+					nundleFeedback = json['data']['feedback'];
                     flipTile()
                     if (nundleFeedback.reduce((a, b) => a + b, 0) == 2 * nundleLength) {
                         showMessage('Magnificent!')
@@ -189,7 +182,15 @@ const checkRow = () => {
                             currentTile = 0
                         }
                     }
-                }
+                } else {
+					if (json['code'] == 408) {
+						showMessage('Input word is not a valid word')
+						return
+					} else {
+						// TODO:
+						// other error checking?
+					}
+				}
             }).catch(err => console.log(err))
     }
 }
