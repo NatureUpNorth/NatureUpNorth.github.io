@@ -101,15 +101,9 @@ const handlePress = (event) =>{
             checkRow()
             return
         }
-        if(keyName <= 'z' && keyName >= 'a' && keyName != 'tab' && keyName != 'shift' && keyName != 'control' && keyName != 'alt'
-        && keyName != 'meta' && keyName != 'browserforward' && keyName != 'browserback' && keyName != 'pageup' && keyName != 'pagedown'){
+        if(keyName.match(/[a-z]/i) && keyName.length == 1){
             addLetter(keyName.toUpperCase())
-            //!TODO Make sure that youre only able to add alpha characters and backspace and shit
         }
-        
-        console.log(keyName)
-
-
     }
 }
 document.addEventListener('keydown', handlePress)
@@ -205,7 +199,7 @@ const flipTile = () => {
     })
 
     guess.forEach((guess, index) => {
-        if (guess.letter == this.wordle[index]) {
+        if (guess.letter.toLowerCase() == this.wordle[index]) {
             guess.color = 'green-overlay'
             checkWordle = checkWordle.replace(guess.letter, '')
         }
