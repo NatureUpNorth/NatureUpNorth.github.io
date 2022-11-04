@@ -1,29 +1,22 @@
+
+//!TODO -- Look Up jquery documentation!!!
 const tileDisplay = document.querySelector('.tile-container')
 const keyboard = document.querySelector('.key-container')
 const messageDisplay = document.querySelector('.message-container')
 
-
-let nundleLength
-let nundleID
-let nundleFeedback
-let maxGuesses = 5
-
-const getNundle = () => {
-    fetch('https://myslu.stlawu.edu/~clee/nundle/nundle.php')
+const getNundle = async () => {
+    return fetch('https://myslu.stlawu.edu/~clee/nundle/nundleWord.php')
         .then(response => response.json())
         .then(json => {
-			// TODO:
-			// error checking
-            nundleLength = json['data']['puzzleLength'];
-			nundleID = json['data']['puzzleID'];
-			// update the title up top
-			titleElement = document.getElementsByClassName('title-container');
-			titleElement[0].innerHTML = "<h1>Nundle #" + nundleID + "</h1>";
-            construct_game();
+            wordle = json["data"]["nundle"];
+            console.log(wordle)
         })
         .catch(err => console.log(err))
 }
 getNundle()
+
+
+
 
 const keys = [
     'Q',
@@ -55,36 +48,38 @@ const keys = [
     'M',
     '«',
 ]
+const guessRows = [
+    ['', '', '', '', ''],
+    ['', '', '', '', ''],
+    ['', '', '', '', ''],
+    ['', '', '', '', ''],
+    ['', '', '', '', ''],
+    ['', '', '', '', '']
+]
 
-let guessRows = []
-
-for (let count = 0; count < maxGuesses; count++) {
-	guessRows.push([]);
-}
+const guessRows_6 = [
+    ['', '', '', '', '', ''],
+    ['', '', '', '', '', ''],
+    ['', '', '', '', '', ''],
+    ['', '', '', '', '', ''],
+    ['', '', '', '', '', ''],
+    ['', '', '', '', '', '']
+]
 let currentRow = 0
 let currentTile = 0
 let isGameOver = false
 
-const construct_game = () => {
-    guessRows.forEach((arr)=>{
-		for (let count = 0; count < nundleLength; count++) {
-			arr.push("");
-		}
-    });
-    guessRows.forEach((guessRow, guessRowIndex) => {
-        const rowElement = document.createElement('div')
-        rowElement.setAttribute('id', 'guessRow-' + guessRowIndex)
-        guessRow.forEach((_guess, guessIndex) => {
-            const tileElement = document.createElement('div')
-            tileElement.setAttribute('id', 'guessRow-' + guessRowIndex + '-tile-' + guessIndex)
-            tileElement.classList.add('tile')
-            rowElement.append(tileElement)
-        })
-        tileDisplay.append(rowElement)
+guessRows.forEach((guessRow, guessRowIndex) => {
+    const rowElement = document.createElement('div')
+    rowElement.setAttribute('id', 'guessRow-' + guessRowIndex)
+    guessRow.forEach((_guess, guessIndex) => {
+        const tileElement = document.createElement('div')
+        tileElement.setAttribute('id', 'guessRow-' + guessRowIndex + '-tile-' + guessIndex)
+        tileElement.classList.add('tile')
+        rowElement.append(tileElement)
     })
-}
-
-
+    tileDisplay.append(rowElement)
+})
 
 keys.forEach(key => {
     const buttonElement = document.createElement('button')
@@ -93,34 +88,27 @@ keys.forEach(key => {
     buttonElement.addEventListener('click', () => handleClick(key))
     keyboard.append(buttonElement)
 })
-// what is a <div. , =>, and confusion on anything that she essentially stated was
-//in another video. JSON, stuff like that
 
 
 const handlePress = (event) =>{
-    const keyName = event.key.toUpperCase()
+    const keyName = event.key.toLowerCase()
     if(!isGameOver){
-        if(keyName === 'BACKSPACE'){
+        if(keyName === 'backspace'){
             deleteLetter()
             return
         }
-        if(keyName === 'ENTER'){
+        if(keyName === 'enter'){
             checkRow()
             return
         }
-        if((!keys.includes(keyName))){
-           showMessage("Invalid Character")
-        }else{
+        if(keyName <= 'z' && keyName >= 'a' && keyName != 'tab' && keyName != 'shift' && keyName != 'control' && keyName != 'alt'
+        && keyName != 'meta' && keyName != 'browserforward' && keyName != 'browserback' && keyName != 'pageup' && keyName != 'pagedown'){
             addLetter(keyName.toUpperCase())
+            //!TODO Make sure that youre only able to add alpha characters and backspace and shit
         }
         
-        // if(keyName <= 'z' && keyName >= 'a' && keyName != 'tab' && keyName != 'shift' && keyName != 'control' && keyName != 'alt'
-        // && keyName != 'meta' && keyName != 'browserforward' && keyName != 'browserback' && keyName != 'pageup' && keyName != 'pagedown'){
-        //     addLetter(keyName.toUpperCase())
-        // }
-        
         console.log(keyName)
-        //do I need a to letter function?? 
+
 
     }
 }
@@ -143,7 +131,7 @@ const handleClick = (letter) => {
 }
 
 const addLetter = (letter) => {
-    if (currentTile < nundleLength && currentRow < 6) {
+    if (currentTile < 5 && currentRow < 6) {
         const tile = document.getElementById('guessRow-' + currentRow + '-tile-' + currentTile)
         tile.textContent = letter
         guessRows[currentRow][currentTile] = letter
@@ -163,37 +151,34 @@ const deleteLetter = () => {
 }
 
 const checkRow = () => {
-    const guess = guessRows[currentRow].join('')
+    const guess = guessRows[currentRow].join('').toLowerCase()
     if (currentTile > 4) {
-        fetch(`https://myslu.stlawu.edu/~clee/nundle/nundle.php?puzzle=${nundleID}&guess=${guess}`)
+        fetch(`https://myslu.stlawu.edu/~clee/nundle/isValid.php?guess=${guess}`)
+        
             .then(response => response.json())
-            .then(json => {
-				if (json['code'] == 200) {
-					nundleFeedback = json['data']['feedback'];
+            .then(response => {
+                console.log(response)
+                if (!response.data.isValid) {
+                    showMessage('word not in list')
+                    return
+                } else {
                     flipTile()
-                    if (nundleFeedback.reduce((a, b) => a + b, 0) == 2 * nundleLength) {
+                    if (guess == this.wordle) {
                         showMessage('Magnificent!')
                         isGameOver = true
                         return
                     } else {
-                        if (currentRow >= maxGuesses - 1) {
+                        if (currentRow >= 5) {
                             isGameOver = true
-                            showMessage('Game Over!')
+                            showMessage('Game Over: ' + this.wordle)
                             return
-                        } else {
+                        }
+                        if (currentRow < 5) {
                             currentRow++
                             currentTile = 0
                         }
                     }
-                } else {
-					if (json['code'] == 408) {
-						showMessage('Input word is not a valid word')
-						return
-					} else {
-						// TODO:
-						// other error checking?
-					}
-				}
+                }
             }).catch(err => console.log(err))
     }
 }
@@ -202,7 +187,7 @@ const showMessage = (message) => {
     const messageElement = document.createElement('p')
     messageElement.textContent = message
     messageDisplay.append(messageElement)
-    setTimeout(() => messageDisplay.removeChild(messageElement),2000)
+    setTimeout(() => messageDisplay.removeChild(messageElement), 2000)
 }
 
 const addColorToKey = (keyLetter, color) => {
@@ -212,6 +197,7 @@ const addColorToKey = (keyLetter, color) => {
 
 const flipTile = () => {
     const rowTiles = document.querySelector('#guessRow-' + currentRow).childNodes
+    let checkWordle = this.wordle.toUpperCase()
     const guess = []
 
     rowTiles.forEach(tile => {
@@ -219,14 +205,16 @@ const flipTile = () => {
     })
 
     guess.forEach((guess, index) => {
-        if (nundleFeedback[index] == 2) {
+        if (guess.letter == this.wordle[index]) {
             guess.color = 'green-overlay'
+            checkWordle = checkWordle.replace(guess.letter, '')
         }
     })
 
-    guess.forEach((guess, index) => {
-        if (nundleFeedback[index] == 1) {
+    guess.forEach(guess => {
+        if (checkWordle.includes(guess.letter)) {
             guess.color = 'yellow-overlay'
+            checkWordle = checkWordle.replace(guess.letter, '')
         }
     })
 
