@@ -77,15 +77,29 @@ background-color: #15586f;
 
 
 .message-container{
-    height: 30px;
+    z-index: 999;
+    position: absolute;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20%;
+    align-items: center;
 }
 .message-container p {
     background-color: #818384;
+    padding: 30px 70px 30px 70px;
+    border-radius: 5px;
+}
+
+.not-in{
+    height: 30px;
+}
+.not-in N{
+    background-color: #818384;
     border-radius: 10px;
     padding: 10px;
-    margin: 0;
-
+    margin: 10px;
 }
+
 
 .tile.flip {
     animation: 0.5s linear flipping;

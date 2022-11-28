@@ -1,5 +1,4 @@
 
-//!TODO -- Look Up jquery documentation!!!
 const tileDisplay = document.querySelector('.tile-container')
 const keyboard = document.querySelector('.key-container')
 const messageDisplay = document.querySelector('.message-container')
@@ -14,10 +13,6 @@ const getNundle = async () => {
         .catch(err => console.log(err))
 }
 getNundle()
-
-
-
-
 const keys = [
     'Q',
     'W',
@@ -57,7 +52,7 @@ const guessRows = [
     ['', '', '', '', '']
 ]
 
-const guessRows_6 = [
+const Six_letter = [
     ['', '', '', '', '', ''],
     ['', '', '', '', '', ''],
     ['', '', '', '', '', ''],
@@ -108,7 +103,6 @@ const handlePress = (event) =>{
 }
 document.addEventListener('keydown', handlePress)
 
-
 const handleClick = (letter) => {
     if (!isGameOver) {
         if (letter === '«') {
@@ -153,7 +147,7 @@ const checkRow = () => {
             .then(response => {
                 console.log(response)
                 if (!response.data.isValid) {
-                    showMessage('word not in list')
+                    notin('word not in list')
                     return
                 } else {
                     flipTile()
@@ -164,7 +158,7 @@ const checkRow = () => {
                     } else {
                         if (currentRow >= 5) {
                             isGameOver = true
-                            showMessage('Game Over: ' + this.wordle)
+                            showMessage('Game Over: ' + this.wordle + "\n Want to learn more?? :" + "https://www.wikipedia.org/")
                             return
                         }
                         if (currentRow < 5) {
@@ -177,11 +171,17 @@ const checkRow = () => {
     }
 }
 
+const notin = (message) => {
+    const messageElement = document.createElement('N')
+    messageElement.textContent = message
+    messageDisplay.append(messageElement)
+    setTimeout(() => messageDisplay.removeChild(messageElement), 3000)
+}
 const showMessage = (message) => {
     const messageElement = document.createElement('p')
     messageElement.textContent = message
     messageDisplay.append(messageElement)
-    setTimeout(() => messageDisplay.removeChild(messageElement), 2000)
+    setTimeout(() => messageDisplay.removeChild(messageElement), 10000)
 }
 
 const addColorToKey = (keyLetter, color) => {
