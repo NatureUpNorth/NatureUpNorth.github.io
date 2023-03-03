@@ -153,12 +153,15 @@ const checkRow = () => {
                     flipTile()
                     if (guess == this.wordle) {
                         showMessage('Magnificent!')
-                        isGameOver = true
+                        isGameOver = true;
+                        //Save state of end game to be iterated over after, somehow get only the colors.
+                        let endGame = document.querySelector(".tile-container");
+                        console.log(endGame)
                         return
                     } else {
                         if (currentRow >= 5) {
                             isGameOver = true
-                            showMessage('Game Over: ' + this.wordle + "\n Want to learn more?? :" + "https://www.wikipedia.org/")
+                            showMessage('Game Over: ' + this.wordle)
                             return
                         }
                         if (currentRow < 5) {
