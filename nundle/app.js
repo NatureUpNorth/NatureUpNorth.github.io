@@ -10,6 +10,8 @@ function getNundle() {
         .then(json => {
             wordle = json["data"]["nundle"]
             puzzleID = json["data"]["puzzleID"]
+            url = "https://en.wikipedia.org/wiki/Main_Page"
+            description = "An important reason for this denial is that the genocide enabled the establishment of a Turkish nation-state; recognition would contradict Turkey's founding myths. The Turkish state's century-long denial of the genocide sets it apart from other cases of genocide."
             initialize()
         })
         .catch(err => console.log(err))
@@ -139,6 +141,34 @@ function initialize() {
         }
     }
     
+    const generateShareText = () => {
+        shareText = "NUNdle " + puzzleID + " " + (currentRow + 1) + "/" + maxGuesses + "\n\n"
+        for (let row = 0; row < currentRow; row++) {
+            for (let col = 0; col < wordle.length; col++) {
+                let tile = document.getElementById("guessRow-" + row + "-tile-" + col)
+                if (tile.classList.contains("grey-overlay")) { // 11036
+                    shareText += String.fromCodePoint(11036)
+                } else {
+                    if (tile.classList.contains("yellow-overlay")) { // 129000
+                        shareText += String.fromCodePoint(129000)
+                    } else { // 129001
+                        shareText += String.fromCodePoint(129001)
+                    }
+                }
+            }
+            shareText += "\n"
+        }
+        for (let col = 0; col < wordle.length; col++) {
+            shareText += String.fromCodePoint(129001)
+        } 
+        shareText += "\n"
+    }
+    
+    const copyShareText = () => {
+        navigator.clipboard.writeText(shareText)
+        notin('Copied results to the clipboard')
+    }
+    
     const checkRow = () => {
         const guess = guessRows[currentRow].join('').toLowerCase()
         if (currentTile >= wordle.length) {
@@ -152,36 +182,15 @@ function initialize() {
                     } else {
                         flipTile()
                         if (guess == this.wordle) {
-                            showMessage('Magnificent!')
+                            showMessage(true)
                             isGameOver = true;
                             //Save state of end game to be iterated over after, somehow get only the colors.
-                            let endGame = document.querySelector(".tile-container");
-                            shareText = "NUNdle " + puzzleID + " " + (currentRow + 1) + "/" + maxGuesses + "\n\n"
-                            for (let row = 0; row < currentRow; row++) {
-                                for (let col = 0; col < wordle.length; col++) {
-                                    let tile = document.getElementById("guessRow-" + row + "-tile-" + col)
-                                    if (tile.classList.contains("grey-overlay")) { // 11036
-                                        shareText += String.fromCodePoint(11036)
-                                    } else {
-                                        if (tile.classList.contains("yellow-overlay")) { // 129000
-                                            shareText += String.fromCodePoint(129000)
-                                        } else { // 129001
-                                            shareText += String.fromCodePoint(129001)
-                                        }
-                                    }
-                                }
-                                shareText += "\n"
-                            }
-                            for (let col = 0; col < wordle.length; col++) {
-                                shareText += String.fromCodePoint(129001)
-                            } 
-                            shareText += "\n"
-                            navigator.clipboard.writeText(shareText)
+                            generateShareText()
                             return
                         } else {
                             if (currentRow >= maxGuesses - 1) {
                                 isGameOver = true
-                                showMessage('Game Over: ' + this.wordle)
+                                showMessage(false)
                                 return
                             } else {
                                 currentRow++
@@ -194,15 +203,50 @@ function initialize() {
     }
     
     const notin = (message) => {
-        const messageElement = document.createElement('N')
-        messageElement.textContent = message
-        messageDisplay.append(messageElement)
-        setTimeout(() => messageDisplay.removeChild(messageElement), 3000)
+        const messageElement = messageDisplay.children.length > 0 ? messageDisplay.children[0] : document.createElement('div') 
+        const innerMessageElement = document.createElement("p")
+        innerMessageElement.textContent = message
+        messageElement.append(innerMessageElement)
+        setTimeout(() => {
+            messageElement.removeChild(innerMessageElement)
+            if (messageElement.children.length == 0) {
+                messageDisplay.style.display = "none"
+            }
+        }, 3000)
+        if (messageDisplay.children.length == 0) {
+            messageDisplay.append(messageElement)
+        }
+        messageDisplay.style.display = "flex"
     }
-    const showMessage = (message) => {
-        const messageElement = document.createElement('p')
-        messageElement.textContent = message
+    
+    const showMessage = (correct) => {
+        // "Magnificent!<p>HELLO!<p>
+        let message = correct ? "Congratulations!" : "Game over!"
+        const messageElement = messageDisplay.children.length > 0 ? messageDisplay.children[0] : document.createElement('div') 
+        const titleElement = document.createElement('p')
+        titleElement.textContent = message
+        messageElement.append(titleElement)
+        const answerElement = document.createElement('h2')
+        answerElement.textContent = wordle.toUpperCase().split("").join(" ")
+        messageElement.append(answerElement)
+        const descriptionElement = document.createElement('p')
+        descriptionElement.textContent = description
+        messageElement.append(descriptionElement)
+        const urlElement = document.createElement('a')
+        urlElement.href = url
+        urlElement.textContent = url
+        urlElement.target = "_blank"
+        messageElement.append(urlElement)
+        const buttonContainerElement = document.createElement('p')
+        const buttonElement = document.createElement('button')
+        buttonElement.innerHTML = "Share"
+        buttonElement.onclick = copyShareText
+        buttonElement.style.padding = "5px"
+        buttonElement.style.color = "#000"
+        buttonContainerElement.append(buttonElement)
+        messageElement.append(buttonContainerElement)
         messageDisplay.append(messageElement)
+        messageDisplay.style.display = "flex"
     }
     
     const addColorToKey = (keyLetter, color) => {
