@@ -11,7 +11,7 @@ function getNundle() {
             wordle = json["data"]["nundle"]
             puzzleID = json["data"]["puzzleID"]
             url = "https://en.wikipedia.org/wiki/Main_Page"
-            description = "An important reason for this denial is that the genocide enabled the establishment of a Turkish nation-state; recognition would contradict Turkey's founding myths. The Turkish state's century-long denial of the genocide sets it apart from other cases of genocide."
+            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
             initialize()
         })
         .catch(err => console.log(err))
