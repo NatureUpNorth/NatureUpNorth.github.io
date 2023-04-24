@@ -5,8 +5,7 @@
 }
 
 body{
-
-background-color: #15586f;
+    background-color: #15586f;
 }
 
 .game-container{
@@ -34,8 +33,6 @@ background-color: #15586f;
     height: 50px;
 }
 
-
-
 .key-container{
     width: 510px;
     display: flex;
@@ -51,6 +48,7 @@ background-color: #15586f;
     color: #ffffff;
     margin: 4px;
 }
+
 .key-container button:nth-child(11){
     margin-left: 30px;
 }
@@ -59,6 +57,7 @@ background-color: #15586f;
 .key-container button:nth-child(28){
     width: 68px;
 }
+
 .tile-container div{
     display: flex;
 }
@@ -74,8 +73,6 @@ background-color: #15586f;
     margin: 2px;
 }
 
-
-
 .message-container{
     z-index: 999;
     position: absolute;
@@ -84,6 +81,7 @@ background-color: #15586f;
     margin-top: 20%;
     align-items: center;
 }
+
 .message-container p {
     background-color: #818384;
     padding: 30px 70px 30px 70px;
@@ -93,13 +91,13 @@ background-color: #15586f;
 .not-in{
     height: 30px;
 }
+
 .not-in N{
     background-color: #818384;
     border-radius: 10px;
     padding: 10px;
     margin: 10px;
 }
-
 
 .tile.flip {
     animation: 0.5s linear flipping;
@@ -117,20 +115,17 @@ background-color: #15586f;
     }
 }
 
-
-
 .grey-overlay{
     background-color: #533a1f !important;
     border: none !important;
 }
+
 .yellow-overlay{
     background-color: #b59f3a !important;
     border: none !important;
 }
+
 .green-overlay {
     background-color: #39531e !important; 
     border:none !important
 }
-
-
-
