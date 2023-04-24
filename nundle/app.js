@@ -9,6 +9,7 @@ function getNundle() {
         .then(response => response.json())
         .then(json => {
             wordle = json["data"]["nundle"]
+            puzzleID = json["data"]["puzzleID"]
             initialize()
         })
         .catch(err => console.log(err))
@@ -155,7 +156,27 @@ function initialize() {
                             isGameOver = true;
                             //Save state of end game to be iterated over after, somehow get only the colors.
                             let endGame = document.querySelector(".tile-container");
-                            console.log(endGame)
+                            shareText = "NUNdle " + puzzleID + " " + (currentRow + 1) + "/" + maxGuesses + "\n\n"
+                            for (let row = 0; row < currentRow; row++) {
+                                for (let col = 0; col < wordle.length; col++) {
+                                    let tile = document.getElementById("guessRow-" + row + "-tile-" + col)
+                                    if (tile.classList.contains("grey-overlay")) { // 11036
+                                        shareText += String.fromCodePoint(11036)
+                                    } else {
+                                        if (tile.classList.contains("yellow-overlay")) { // 129000
+                                            shareText += String.fromCodePoint(129000)
+                                        } else { // 129001
+                                            shareText += String.fromCodePoint(129001)
+                                        }
+                                    }
+                                }
+                                shareText += "\n"
+                            }
+                            for (let col = 0; col < wordle.length; col++) {
+                                shareText += String.fromCodePoint(129001)
+                            } 
+                            shareText += "\n"
+                            navigator.clipboard.writeText(shareText)
                             return
                         } else {
                             if (currentRow >= maxGuesses - 1) {
