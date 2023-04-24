@@ -4,42 +4,42 @@
     'Lucida Sans', Arial, sans-serif;
 }
 
-body{
+body {
     background-color: #15586f;
 }
 
-.game-container{
+.game-container {
     height: 90vh;
     display: flex;
     flex-direction:column;
     justify-content: space-between;
     align-items: center;
 }
-.title-container{
+.title-container {
     text-align: center;
     margin-left: 30px;
     width: 500px;
     border-bottom: solid 1px #3a3a3c;
 }
 
-.tile-container{
+.tile-container {
     width: 330px;
     margin-bottom: 30px;
 }
 
-.title-container img{
+.title-container img {
     margin-left: 1px;
     width: 50px;
     height: 50px;
 }
 
-.key-container{
+.key-container {
     width: 510px;
     display: flex;
     flex-wrap: wrap;
 }
 
-.key-container button{
+.key-container button {
     width: 43px;
     height: 58px;
     border-radius: 4px;
@@ -49,20 +49,20 @@ body{
     margin: 4px;
 }
 
-.key-container button:nth-child(11){
+.key-container button:nth-child(11) {
     margin-left: 30px;
 }
 
 .key-container button:nth-child(20),
-.key-container button:nth-child(28){
+.key-container button:nth-child(28) {
     width: 68px;
 }
 
-.tile-container div{
+.tile-container div {
     display: flex;
 }
 
-.tile-container .tile{
+.tile-container .tile {
     width: 62px;
     height: 62px;
     border: 2px solid#3a3a3c;
@@ -73,26 +73,28 @@ body{
     margin: 2px;
 }
 
-.message-container{
+.message-container {
     z-index: 999;
     position: absolute;
     display: flex;
     justify-content: space-around;
     margin-top: 20%;
+    margin-left: 5%;
+    margin-right: 5%;
     align-items: center;
 }
 
-.message-container p {
+.message-container div {
     background-color: #818384;
     padding: 30px 70px 30px 70px;
     border-radius: 5px;
 }
 
-.not-in{
+.not-in {
     height: 30px;
 }
 
-.not-in N{
+.not-in N {
     background-color: #818384;
     border-radius: 10px;
     padding: 10px;
@@ -103,7 +105,7 @@ body{
     animation: 0.5s linear flipping;
 }
 
-@keyframes flipping{
+@keyframes flipping {
     0%{
         transform: rotateX(0deg);
     }
@@ -115,12 +117,12 @@ body{
     }
 }
 
-.grey-overlay{
+.grey-overlay {
     background-color: #533a1f !important;
     border: none !important;
 }
 
-.yellow-overlay{
+.yellow-overlay {
     background-color: #b59f3a !important;
     border: none !important;
 }
