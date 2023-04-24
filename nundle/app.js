@@ -237,14 +237,16 @@ function initialize() {
         urlElement.textContent = url
         urlElement.target = "_blank"
         messageElement.append(urlElement)
-        const buttonContainerElement = document.createElement('p')
-        const buttonElement = document.createElement('button')
-        buttonElement.innerHTML = "Share"
-        buttonElement.onclick = copyShareText
-        buttonElement.style.padding = "5px"
-        buttonElement.style.color = "#000"
-        buttonContainerElement.append(buttonElement)
-        messageElement.append(buttonContainerElement)
+        if (correct) {
+            const buttonContainerElement = document.createElement('p')
+            const buttonElement = document.createElement('button')
+            buttonElement.innerHTML = "Share"
+            buttonElement.onclick = copyShareText
+            buttonElement.style.padding = "5px"
+            buttonElement.style.color = "#000"
+            buttonContainerElement.append(buttonElement)
+            messageElement.append(buttonContainerElement)
+        }
         messageDisplay.append(messageElement)
         messageDisplay.style.display = "flex"
     }
