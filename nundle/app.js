@@ -3,7 +3,6 @@ const tileDisplay = document.querySelector('.tile-container')
 const keyboard = document.querySelector('.key-container')
 const messageDisplay = document.querySelector('.message-container')
 
-//const getNundle = async() => {
 function getNundle() {
     return fetch('https://myslu.stlawu.edu/~clee/nundle/nundleWord.php')
         .then(response => response.json())
@@ -161,7 +160,8 @@ function initialize() {
         for (let col = 0; col < wordle.length; col++) {
             shareText += String.fromCodePoint(129001)
         } 
-        shareText += "\n"
+        shareText += "\n\n"
+        shareText += "Play NUNdle at https://natureupnorth.github.io/nundle/\n"
     }
     
     const copyShareText = () => {
