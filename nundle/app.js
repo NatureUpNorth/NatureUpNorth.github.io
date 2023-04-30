@@ -49,7 +49,8 @@ const keys = [
     'B',
     'N',
     'M',
-    '«',
+//    '«',
+    String.fromCodePoint(9003)
 ]
 
 const maxGuesses = 6
@@ -110,7 +111,7 @@ function initialize() {
     
     const handleClick = (letter) => {
         if (!isGameOver) {
-            if (letter === '«') {
+            if (letter === String.fromCodePoint(9003)) {
                 deleteLetter()
                 return
             }
