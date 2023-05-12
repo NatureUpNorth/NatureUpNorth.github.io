@@ -86,6 +86,9 @@ function initialize() {
         const buttonElement = document.createElement('button')
         buttonElement.textContent = key
         buttonElement.setAttribute('id', key)
+        if (key != "ENTER") {
+            buttonElement.style.fontSize = "x-large"
+        }
         buttonElement.addEventListener('click', () => handleClick(key))
         keyboard.append(buttonElement)
     })
