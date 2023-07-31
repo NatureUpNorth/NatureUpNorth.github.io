@@ -4,7 +4,7 @@ const keyboard = document.querySelector('.key-container')
 const messageDisplay = document.querySelector('.message-container')
 
 function getNundle() {
-    return fetch('http://myslu.stlawu.edu/~clee/nundle/nundleWord.php')
+    return fetch('https://myslu.stlawu.edu/~clee/nundle/nundleWord.php')
         .then(response => response.json())
         .then(json => {
             wordle = json["data"]["nundle"]
@@ -181,7 +181,7 @@ function initialize() {
     const checkRow = () => {
         const guess = guessRows[currentRow].join('').toLowerCase()
         if (currentTile >= wordle.length) {
-            fetch(`http://myslu.stlawu.edu/~clee/nundle/isValid.php?guess=${guess}`)
+            fetch(`https://myslu.stlawu.edu/~clee/nundle/isValid.php?guess=${guess}`)
             
                 .then(response => response.json())
                 .then(response => {
