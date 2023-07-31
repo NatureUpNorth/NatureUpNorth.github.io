@@ -4,16 +4,18 @@ const keyboard = document.querySelector('.key-container')
 const messageDisplay = document.querySelector('.message-container')
 
 function getNundle() {
-    return fetch('https://myslu.stlawu.edu/~clee/nundle/nundleWord.php')
+    return fetch('http://myslu.stlawu.edu/~clee/nundle/nundleWord.php')
         .then(response => response.json())
         .then(json => {
             wordle = json["data"]["nundle"]
+            wordleDescription = json["data"]["description"]
+            wordleLink = json["data"]["link"]
             puzzleID = json["data"]["puzzleID"]
             document.title = "Nundle " + puzzleID
             let titleElement = document.getElementById("title")
             titleElement.innerHTML = "Nundle " + puzzleID
-            url = "https://en.wikipedia.org/wiki/Main_Page"
-            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+            description = wordleDescription.length > 0 ? wordleDescription : "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."
+            url = wordleLink.length > 0 ? wordleLink : "https://natureupnorth.org"
             initialize()
         })
         .catch(err => console.log(err))
@@ -179,7 +181,7 @@ function initialize() {
     const checkRow = () => {
         const guess = guessRows[currentRow].join('').toLowerCase()
         if (currentTile >= wordle.length) {
-            fetch(`https://myslu.stlawu.edu/~clee/nundle/isValid.php?guess=${guess}`)
+            fetch(`http://myslu.stlawu.edu/~clee/nundle/isValid.php?guess=${guess}`)
             
                 .then(response => response.json())
                 .then(response => {
