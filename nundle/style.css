@@ -5,7 +5,16 @@
 }
 
 body {
-    background-color: #15586f;
+    background-position: center;
+    background-attachment: fixed; 
+    background-image: url("maple_background.jpg");
+    /* <a 
+href="https://www.freepik.com/free-vector/red-maple-leaf-frame-background_14873322.htm#query=maple%20leaf%20border&position=0&from_view=keyword&track=ais">Image 
+by callmetak</a> on Freepik */
+    background-size: cover;
+    webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
 }
 
 .game-container {
@@ -15,11 +24,13 @@ body {
     justify-content: space-between;
     align-items: center;
 }
+
 .title-container {
     text-align: center;
-    margin-left: 30px;
     width: 500px;
     border-bottom: solid 1px #3a3a3c;
+    background-color: #533a1f;
+    border-radius: 25px;
 }
 
 .tile-container {
@@ -45,7 +56,7 @@ body {
     border-radius: 4px;
     border: none;
     background-color: #818384;
-    color: #ffffff;
+    color: #fdfdfd;
     margin: 4px;
 }
 
@@ -71,6 +82,8 @@ body {
     justify-content: center;
     align-items: center;
     margin: 2px;
+    background: #fdfdfd;
+    color: #000;
 }
 
 .message-container {
@@ -103,6 +116,7 @@ body {
 
 .tile.flip {
     animation: 0.5s linear flipping;
+    color: #fdfdfd;
 }
 
 @keyframes flipping {
