@@ -198,7 +198,7 @@ function initialize() {
                         } else {
                             if (currentRow >= maxGuesses - 1) {
                                 isGameOver = true
-                                setTimeout(function() {showMessage(true)}, 500 * wordle.length)
+                                setTimeout(function() {showMessage(false)}, 500 * wordle.length)
                                 return
                             } else {
                                 currentRow++
