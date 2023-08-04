@@ -191,15 +191,14 @@ function initialize() {
                     } else {
                         flipTile()
                         if (guess == this.wordle) {
-                            showMessage(true)
-                            isGameOver = true;
+                            isGameOver = true
+                            setTimeout(function() {showMessage(true)}, 500 * wordle.length)
                             //Save state of end game to be iterated over after, somehow get only the colors.
-                            generateShareText()
                             return
                         } else {
                             if (currentRow >= maxGuesses - 1) {
                                 isGameOver = true
-                                showMessage(false)
+                                setTimeout(function() {showMessage(true)}, 500 * wordle.length)
                                 return
                             } else {
                                 currentRow++
@@ -229,6 +228,9 @@ function initialize() {
     }
     
     const showMessage = (correct) => {
+        if (correct) {
+            generateShareText()
+        }
         // "Magnificent!<p>HELLO!<p>
         let message = correct ? "Congratulations!" : "Game over!"
         const messageElement = messageDisplay.children.length > 0 ? messageDisplay.children[0] : document.createElement('div') 
